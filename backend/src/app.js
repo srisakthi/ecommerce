@@ -9,6 +9,7 @@ import userRoutes from "./routes/user.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import productRoutes from "./routes/product.routes.js";
+import orderRoutes from "./routes/order.routes.js";
 import path from "path";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import errorHandler from "./middlewares/error.middleware.js";
@@ -52,5 +53,7 @@ app.use("/api/v1/categories", categoryRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/orders", orderRoutes);
+
 app.use(errorHandler);
 export default app;

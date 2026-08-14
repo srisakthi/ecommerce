@@ -3,8 +3,21 @@ import {
     FaSearch,
     FaMapMarkerAlt
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const cartItems = useSelector(
+        (state) => state.cart.items
+    );
+    const cartCount = cartItems.reduce(
+        (total, item) =>
+            total + item.quantity,
+        0
+    );
+
 
     return (
 
@@ -107,12 +120,27 @@ const Header = () => {
                     <FaShoppingCart
                         className="text-3xl"
                     />
+                    <button
+                        type="button"
+                        onClick={() => navigate("/cart")}
+                        className="relative flex items-center gap-1 text-white"
+                    >
+                        <span className="text-2xl">
+                            🛒
+                        </span>
 
-                    <span className="font-bold">
+                        <span>
+                            Cart
+                        </span>
 
-                        Cart
-
-                    </span>
+                        {cartCount > 0 && (
+                            <span
+                                className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FF9900] px-1 text-xs font-bold text-black"
+                            >
+                                {cartCount}
+                            </span>
+                        )}
+                    </button>
 
                 </div>
 

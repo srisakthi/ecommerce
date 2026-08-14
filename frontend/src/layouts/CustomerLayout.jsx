@@ -1,29 +1,23 @@
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
+import MenuBar from "../components/layout/MenuBar";
+import Footer from "../components/layout/Footer";
 
 const CustomerLayout = ({ children }) => {
-
     return (
+        <div className="min-h-screen bg-gray-100">
 
-        <>
+            <Header />
 
-            <Header/>
-
-            <MenuBar/>
+            <MenuBar />
 
             <main>
-
-            {children}
-
+                {children}
             </main>
 
-            <Footer/>
+            <Footer />
 
-        </>
-
+        </div>
     );
-
 };
 
 export default CustomerLayout;

@@ -39,9 +39,7 @@ router.put(
     productController.updateProduct
 );
 
-router.get("/:id",
-authenticate,
-authorize("admin"), productController.getProductById);
+router.get("/:id", productController.getProductById);
 
 router.delete(
     "/:id",

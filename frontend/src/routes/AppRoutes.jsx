@@ -13,6 +13,10 @@ import Products from "../pages/admin/Products";
 import CreateProduct from "../pages/admin/CreateProduct";
 import EditProduct from "../pages/admin/EditProduct";
 import ProductDetails from "../pages/admin/ProductDetails";
+import CustomerProducts from "../pages/Products/Products";
+import CustomerProductDetails from "../pages/ProductDetails/ProductDetails";
+import Cart from "../pages/Cart/Cart";
+import Checkout from "../pages/Checkout/Checkout";
 
 import AuthLayout from "../layouts/AuthLayout";
 import CustomerLayout from "../layouts/CustomerLayout";
@@ -37,6 +41,40 @@ const AppRoutes = () => {
                             <Home />
 
                         </CustomerLayout>
+                    }
+                />
+                <Route
+                    path="/products"
+                    element={
+                        <CustomerLayout>
+                            <CustomerProducts />
+                        </CustomerLayout>
+                    }
+                />
+                <Route
+                    path="/products/:id"
+                    element={
+                        <CustomerLayout>
+                            <CustomerProductDetails />
+                        </CustomerLayout>
+                    }
+                />
+                <Route
+                    path="/cart"
+                    element={
+                        <CustomerLayout>
+                            <Cart />
+                        </CustomerLayout>
+                    }
+                />
+                <Route
+                    path="/checkout"
+                    element={
+                        <ProtectedRoute>
+                            <CustomerLayout>
+                                <Checkout />
+                            </CustomerLayout>
+                        </ProtectedRoute>
                     }
                 />
 

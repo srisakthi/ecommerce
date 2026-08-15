@@ -14,7 +14,7 @@ const MenuBar = () => {
     };
 
     const handleCouponsClick = () => {
-        toast("Use Code 'SWIFTMART10' for 10% OFF on all orders!", {
+        toast("Use Code 'NEXCART10' for 10% OFF on all orders!", {
             icon: "🎟️",
             style: { background: "#131921", color: "#fff", border: "1px solid #ff9900" },
         });
@@ -73,13 +73,13 @@ const MenuBar = () => {
                             <span>Gift Cards & Coupons</span>
                         </button>
 
-                        {/* Sell on SwiftMart */}
+                        {/* Sell on NexCart */}
                         <Link
                             to="/admin"
                             className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-[#37475A] font-medium text-gray-200 hover:text-white transition-colors cursor-pointer border border-transparent hover:border-gray-500"
                         >
                             <FaStore className="text-amber-400 text-xs" />
-                            <span>Sell on SwiftMart</span>
+                            <span>Sell on NexCart</span>
                         </Link>
 
                     </div>
@@ -106,7 +106,7 @@ const MenuBar = () => {
                         {/* Drawer Header */}
                         <div className="bg-[#131921] text-white p-4 flex items-center justify-between">
                             <div className="flex items-center gap-2 font-bold text-lg">
-                                <span>Hello, Browse SwiftMart</span>
+                                <span>Hello, Browse NexCart</span>
                             </div>
                             <button
                                 onClick={() => setIsCategoryDrawerOpen(false)}
@@ -179,7 +179,7 @@ const MenuBar = () => {
                         <div className="flex items-center justify-between border-b pb-3 mb-4">
                             <div className="flex items-center gap-2 text-amber-600 font-bold text-lg">
                                 <FaHeadset size={22} />
-                                <span>SwiftMart Customer Support</span>
+                                <span>NexCart Customer Support</span>
                             </div>
                             <button onClick={() => setIsSupportModalOpen(false)} className="text-gray-400 hover:text-gray-600">
                                 <FaTimes size={18} />
@@ -205,7 +205,7 @@ const MenuBar = () => {
                         </div>
 
                         <div className="pt-3 border-t text-center text-xs text-gray-500">
-                            24/7 Helpline: <span className="font-bold text-gray-800">support@swiftmart.in</span>
+                            24/7 Helpline: <span className="font-bold text-gray-800">support@nexcart.in</span>
                         </div>
                     </div>
                 </div>

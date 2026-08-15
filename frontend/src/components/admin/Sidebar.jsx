@@ -70,7 +70,7 @@ const Sidebar = () => {
     return (
         <aside className="w-64 min-h-screen bg-[#131921] text-white flex flex-col">
             <div className="text-2xl font-bold p-6 border-b border-gray-700">
-                SwiftMart Admin
+                NexCart Admin
             </div>
 
             <nav className="flex-1 py-2">

@@ -1084,14 +1084,18 @@ const ProductCard = ({
                     </span>
 
                     {hasDiscount && (
-
-                        <span className="text-sm text-gray-400 line-through">
-                            ₹
-                            {originalPrice.toLocaleString(
-                                "en-IN"
-                            )}
-                        </span>
-
+                        <>
+                            <span className="text-sm text-gray-400 line-through">
+                                ₹
+                                {originalPrice.toLocaleString(
+                                    "en-IN"
+                                )}
+                            </span>
+                            
+                            <span className="text-sm font-bold text-green-600">
+                                {Math.round(((originalPrice - price) / originalPrice) * 100)}% off
+                            </span>
+                        </>
                     )}
 
                 </div>
@@ -1117,7 +1121,7 @@ const ProductCard = ({
                             `/products/${product._id}`
                         )
                     }
-                    className="mt-4 rounded-lg bg-[#FFD814] py-2.5 text-sm font-semibold hover:bg-[#F7CA00]"
+                    className="mt-4 w-full rounded-lg bg-[#FFD814] py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-[#F7CA00]"
                 >
                     View Product
                 </button>

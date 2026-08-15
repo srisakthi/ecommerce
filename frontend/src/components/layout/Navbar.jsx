@@ -15,7 +15,7 @@ const Navbar = () => {
             }}
         >
 
-            <h2>SwiftMart</h2>
+            <h2>NexCart</h2>
 
             <div>
 

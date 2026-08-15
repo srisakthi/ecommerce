@@ -7,7 +7,7 @@ const AuthCard = ({ title, subtitle, children }) => {
                 <div className="text-center mb-8">
 
                     <h1 className="text-3xl font-bold text-[#131921]">
-                        SwiftMart
+                        NexCart
                     </h1>
 
                     <h2 className="text-2xl font-semibold mt-6">

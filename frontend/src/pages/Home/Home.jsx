@@ -128,7 +128,7 @@ const Home = () => {
                         <div className="text-white">
 
                             <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#FF9900]">
-                                Welcome to SwiftMart
+                                Welcome to NexCart
                             </p>
 
                             <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
@@ -526,6 +526,10 @@ const Home = () => {
                                                         ).toLocaleString(
                                                             "en-IN"
                                                         )}
+                                                    </span>
+
+                                                    <span className="ml-1 text-sm font-bold text-green-600">
+                                                        {Math.round(((Number(product.price) - Number(product.salePrice)) / Number(product.price)) * 100)}% off
                                                     </span>
 
                                                 </div>

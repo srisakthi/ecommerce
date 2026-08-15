@@ -70,13 +70,13 @@ const Header = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="flex-1 px-3 py-2 text-black outline-none text-sm bg-white placeholder-gray-500"
-                        placeholder="Search SwiftMart products, brands and deals..."
+                        placeholder="Search NexCart products, brands and deals..."
                     />
 
                     <button
                         type="submit"
                         className="bg-[#ff9900] px-5 hover:bg-[#e88a00] active:bg-amber-600 transition-colors text-gray-950 font-bold flex items-center justify-center text-base"
-                        title="Search SwiftMart"
+                        title="Search NexCart"
                     >
                         <FaSearch />
                     </button>

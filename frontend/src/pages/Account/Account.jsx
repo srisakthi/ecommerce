@@ -142,7 +142,7 @@ const Account = () => {
                         to="/products"
                         className="bg-[#ff9900] hover:bg-amber-500 text-black font-bold px-5 py-2.5 rounded-lg text-sm transition-colors shadow-sm"
                     >
-                        Explore SwiftMart Deals →
+                        Explore NexCart Deals →
                     </Link>
                 </div>
 

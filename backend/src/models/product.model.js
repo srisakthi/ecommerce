@@ -25,6 +25,11 @@ const productSchema = new mongoose.Schema({
         required:true
     },
 
+    seller:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    },
+
     sku:{
         type:String,
         unique:true

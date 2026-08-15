@@ -13,10 +13,14 @@ import {
     deleteProduct,
 } from "../../services/product.service";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getProductImage, DEFAULT_PRODUCT_IMAGE } from "../../utils/image";
+
 
 
 const Products = () => {
     const navigate = useNavigate();
+    const { user } = useSelector(state => state.auth);
 
     const [products, setProducts] = useState([]);
 
@@ -36,19 +40,21 @@ const Products = () => {
 
             setLoading(true);
 
-            const response = await getProducts();
+            let query = "";
+            if (user?.role === "seller") {
+                query = `?seller=${user._id || user.id}`;
+            }
+
+            const response = await getProducts(query);
 
             const result = response.data?.data;
 
-            if (Array.isArray(result)) {
+            const productList = Array.isArray(result)
+                ? result
+                : (result?.products || []);
 
-                setProducts(result);
+            setProducts(productList);
 
-            } else {
-
-                setProducts([]);
-
-            }
 
         } catch (error) {
 
@@ -411,31 +417,18 @@ const Products = () => {
 
                                                 <div className="flex items-center gap-4">
 
-                                                    <div className="h-14 w-14 overflow-hidden rounded-lg border bg-gray-100">
-
-                                                        {product.thumbnail ? (
-
-                                                            <img
-
-                                                                src={product.thumbnail}
-
-                                                                alt={product.name}
-
-                                                                className="h-full w-full object-cover"
-
-                                                            />
-
-                                                        ) : (
-
-                                                            <div className="flex h-full w-full items-center justify-center text-xs text-gray-400">
-
-                                                                No Image
-
-                                                            </div>
-
-                                                        )}
-
+                                                    <div className="h-14 w-14 overflow-hidden rounded-lg border bg-gray-100 shrink-0">
+                                                        <img
+                                                            src={getProductImage(product)}
+                                                            alt={product.name}
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.src = DEFAULT_PRODUCT_IMAGE;
+                                                            }}
+                                                            className="h-full w-full object-cover"
+                                                        />
                                                     </div>
+
 
                                                     <div>
 

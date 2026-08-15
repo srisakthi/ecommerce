@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Pencil, Plus, Search, Trash2, X } from "lucide-react";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 import {
@@ -15,6 +16,7 @@ const emptyForm = {
 };
 
 const Categories = () => {
+    const user = useSelector((state) => state.auth.user);
     const [categories, setCategories] = useState([]);
 
     const [loading, setLoading] = useState(true);
@@ -41,7 +43,11 @@ const Categories = () => {
         try {
             setLoading(true);
 
-            const response = await getCategories();
+            let query = "";
+            if (user?.role === "seller") {
+                query = `?seller=${user._id || user.id}`;
+            }
+            const response = await getCategories(query);
 
             const result = response.data?.data;
 

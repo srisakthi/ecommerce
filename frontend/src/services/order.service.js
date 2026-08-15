@@ -8,3 +8,9 @@ export const getMyOrders = () =>
 
 export const getMyOrderById = (id) =>
     api.get(`/orders/my-orders/${id}`);
+
+export const getAllOrders = () =>
+    api.get("/orders");
+
+export const updateOrderStatus = (id, status) =>
+    api.put(`/orders/${id}/status`, { status });

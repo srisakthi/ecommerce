@@ -1,0 +1,110 @@
+{
+  "info": {
+    "_postman_id": "mern-ecom-enterprise-collection",
+    "name": "mern-ecom",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        { "name": "Register", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "register"] } } },
+        { "name": "Login", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] } } },
+        { "name": "Logout", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "logout"] } } },
+        { "name": "Refresh Token", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/refresh-token", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "refresh-token"] } } },
+        { "name": "Forgot Password", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/forgot-password", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "forgot-password"] } } },
+        { "name": "Reset Password", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/auth/reset-password", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "reset-password"] } } }
+      ]
+    },
+    {
+      "name": "users",
+      "item": [
+        { "name": "Get Profile", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/users/profile", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users", "profile"] } } },
+        { "name": "Update Profile", "request": { "method": "PUT", "url": { "raw": "{{baseUrl}}/api/v1/users/profile", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users", "profile"] } } },
+        { "name": "List Users (Admin)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/users", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users"] } } }
+      ]
+    },
+    {
+      "name": "categories",
+      "item": [
+        { "name": "Get Categories", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/categories", "host": ["{{baseUrl}}"], "path": ["api", "v1", "categories"] } } },
+        { "name": "Create Category (Admin)", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/categories", "host": ["{{baseUrl}}"], "path": ["api", "v1", "categories"] } } }
+      ]
+    },
+    {
+      "name": "products",
+      "item": [
+        { "name": "Get Products", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/products", "host": ["{{baseUrl}}"], "path": ["api", "v1", "products"] } } },
+        { "name": "Get Product By ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/products/:id", "host": ["{{baseUrl}}"], "path": ["api", "v1", "products", ":id"] } } },
+        { "name": "Create Product (Admin)", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/products", "host": ["{{baseUrl}}"], "path": ["api", "v1", "products"] } } }
+      ]
+    },
+    {
+      "name": "cart",
+      "item": [
+        { "name": "Get Cart", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/cart", "host": ["{{baseUrl}}"], "path": ["api", "v1", "cart"] } } },
+        { "name": "Add Item", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/cart/items", "host": ["{{baseUrl}}"], "path": ["api", "v1", "cart", "items"] } } },
+        { "name": "Update Item Quantity", "request": { "method": "PUT", "url": { "raw": "{{baseUrl}}/api/v1/cart/items/:productId", "host": ["{{baseUrl}}"], "path": ["api", "v1", "cart", "items", ":productId"] } } },
+        { "name": "Remove Item", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/v1/cart/items/:productId", "host": ["{{baseUrl}}"], "path": ["api", "v1", "cart", "items", ":productId"] } } }
+      ]
+    },
+    {
+      "name": "wishlist",
+      "item": [
+        { "name": "Get Wishlist", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/wishlist", "host": ["{{baseUrl}}"], "path": ["api", "v1", "wishlist"] } } },
+        { "name": "Add to Wishlist", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/wishlist/:productId", "host": ["{{baseUrl}}"], "path": ["api", "v1", "wishlist", ":productId"] } } },
+        { "name": "Remove from Wishlist", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/v1/wishlist/:productId", "host": ["{{baseUrl}}"], "path": ["api", "v1", "wishlist", ":productId"] } } }
+      ]
+    },
+    {
+      "name": "addresses",
+      "item": [
+        { "name": "Get Addresses", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/addresses", "host": ["{{baseUrl}}"], "path": ["api", "v1", "addresses"] } } },
+        { "name": "Create Address", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/addresses", "host": ["{{baseUrl}}"], "path": ["api", "v1", "addresses"] } } }
+      ]
+    },
+    {
+      "name": "coupons",
+      "item": [
+        { "name": "Apply Coupon", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/coupons/apply", "host": ["{{baseUrl}}"], "path": ["api", "v1", "coupons", "apply"] } } },
+        { "name": "Create Coupon (Admin)", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/coupons", "host": ["{{baseUrl}}"], "path": ["api", "v1", "coupons"] } } }
+      ]
+    },
+    {
+      "name": "orders",
+      "item": [
+        { "name": "Create Order", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/orders", "host": ["{{baseUrl}}"], "path": ["api", "v1", "orders"] } } },
+        { "name": "Get My Orders", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/orders/my-orders", "host": ["{{baseUrl}}"], "path": ["api", "v1", "orders", "my-orders"] } } },
+        { "name": "Get Order By ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/orders/my-orders/:id", "host": ["{{baseUrl}}"], "path": ["api", "v1", "orders", "my-orders", ":id"] } } }
+      ]
+    },
+    {
+      "name": "payments",
+      "item": [
+        { "name": "Create Intent", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/payments/create-intent", "host": ["{{baseUrl}}"], "path": ["api", "v1", "payments", "create-intent"] } } },
+        { "name": "Verify Payment", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/payments/verify", "host": ["{{baseUrl}}"], "path": ["api", "v1", "payments", "verify"] } } }
+      ]
+    },
+    {
+      "name": "reviews",
+      "item": [
+        { "name": "Get Product Reviews", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/reviews/product/:productId", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews", "product", ":productId"] } } },
+        { "name": "Create Review", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/v1/reviews", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews"] } } }
+      ]
+    },
+    {
+      "name": "inventory",
+      "item": [
+        { "name": "Get Low Stock (Admin)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/inventory/low-stock", "host": ["{{baseUrl}}"], "path": ["api", "v1", "inventory", "low-stock"] } } },
+        { "name": "Update Stock (Admin)", "request": { "method": "PUT", "url": { "raw": "{{baseUrl}}/api/v1/inventory/:productId/stock", "host": ["{{baseUrl}}"], "path": ["api", "v1", "inventory", ":productId", "stock"] } } }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        { "name": "Admin Dashboard", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "dashboard"] } } },
+        { "name": "Dashboard Stats", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/v1/dashboard/stats", "host": ["{{baseUrl}}"], "path": ["api", "v1", "dashboard", "stats"] } } }
+      ]
+    }
+  ]
+}

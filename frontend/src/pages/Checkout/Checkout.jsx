@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { createOrder } from "../../services/order.service";
+import { createPaymentIntent, verifyPayment } from "../../services/payment.service";
+import { clearCart } from "../../features/cart/cartSlice";
 
 const Checkout = () => {
 
@@ -26,6 +28,8 @@ const Checkout = () => {
         postalCode: "",
         country: "India",
     });
+
+    const [paymentMethod, setPaymentMethod] = useState("cod");
 
 
     const subtotal = useMemo(() => {
@@ -104,7 +108,7 @@ const Checkout = () => {
                         formData,
 
                     paymentMethod:
-                        "cod",
+                        paymentMethod,
 
                     notes: "",
                 });
@@ -113,15 +117,23 @@ const Checkout = () => {
             const order =
                 response.data.data;
 
+            if (paymentMethod === "online") {
+                const intentResponse = await createPaymentIntent(order._id);
+                // Mocking the payment gateway success flow
+                await verifyPayment({ orderId: order._id, paymentId: intentResponse.data.data.clientSecret, status: "paid" });
+                toast.success("Payment successful!");
+            }
+
+            dispatch(clearCart());
 
             toast.success(
                 "Order placed successfully"
             );
 
-
             navigate(
-                `/orders/${order._id}`
+                `/order-confirmation/${order._id}`
             );
+
 
 
         } catch (error) {
@@ -391,27 +403,55 @@ const Checkout = () => {
                             </h2>
 
 
-                            <label className="flex cursor-pointer items-center gap-3 rounded-md border p-4">
+                            <div className="space-y-4">
+                                <label className="flex cursor-pointer items-center gap-3 rounded-md border p-4">
 
-                                <input
-                                    type="radio"
-                                    checked
-                                    readOnly
-                                />
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="cod"
+                                        checked={paymentMethod === "cod"}
+                                        onChange={(e) => setPaymentMethod(e.target.value)}
+                                    />
 
-                                <div>
+                                    <div>
 
-                                    <p className="font-semibold">
-                                        Cash on Delivery
-                                    </p>
+                                        <p className="font-semibold">
+                                            Cash on Delivery
+                                        </p>
 
-                                    <p className="text-sm text-gray-500">
-                                        Pay when your order is delivered.
-                                    </p>
+                                        <p className="text-sm text-gray-500">
+                                            Pay when your order is delivered.
+                                        </p>
 
-                                </div>
+                                    </div>
 
-                            </label>
+                                </label>
+
+                                <label className="flex cursor-pointer items-center gap-3 rounded-md border p-4">
+
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="online"
+                                        checked={paymentMethod === "online"}
+                                        onChange={(e) => setPaymentMethod(e.target.value)}
+                                    />
+
+                                    <div>
+
+                                        <p className="font-semibold">
+                                            Online Payment
+                                        </p>
+
+                                        <p className="text-sm text-gray-500">
+                                            Pay now via credit/debit card, UPI, etc.
+                                        </p>
+
+                                    </div>
+
+                                </label>
+                            </div>
 
                         </div>
 

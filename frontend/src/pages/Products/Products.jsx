@@ -13,8 +13,8 @@ import toast from "react-hot-toast";
 
 import { getProducts } from "@/services/product.service";
 import { getCategories } from "@/services/category.service";
+import { getProductImage, DEFAULT_PRODUCT_IMAGE, getImageUrl } from "../../utils/image";
 
-const API_BASE_URL = "http://localhost:5000";
 
 const Products = () => {
     const navigate = useNavigate();
@@ -24,6 +24,9 @@ const Products = () => {
 
     const categoryFromUrl =
         searchParams.get("category") || "";
+
+    const searchFromUrl =
+        searchParams.get("search") || "";
 
     const [products, setProducts] =
         useState([]);
@@ -35,7 +38,7 @@ const Products = () => {
         useState(true);
 
     const [search, setSearch] =
-        useState("");
+        useState(searchFromUrl);
 
     const [category, setCategory] =
         useState(categoryFromUrl);
@@ -66,7 +69,9 @@ const Products = () => {
 
     useEffect(() => {
         setCategory(categoryFromUrl);
-    }, [categoryFromUrl]);
+        setSearch(searchFromUrl);
+    }, [categoryFromUrl, searchFromUrl]);
+
 
     const loadData = async () => {
         try {
@@ -81,22 +86,22 @@ const Products = () => {
             ]);
 
             const productsData =
-                productsResponse.data?.data || [];
+                productsResponse.data?.data;
 
             const categoriesData =
-                categoriesResponse.data?.data || [];
+                categoriesResponse.data?.data;
 
-            setProducts(
-                Array.isArray(productsData)
-                    ? productsData
-                    : []
-            );
+            const productList = Array.isArray(productsData)
+                ? productsData
+                : (productsData?.products || []);
 
-            setCategories(
-                Array.isArray(categoriesData)
-                    ? categoriesData
-                    : []
-            );
+            const categoryList = Array.isArray(categoriesData)
+                ? categoriesData
+                : (categoriesData?.categories || []);
+
+            setProducts(productList);
+            setCategories(categoryList);
+
 
         } catch (error) {
             console.error(error);
@@ -983,25 +988,16 @@ const ProductCard = ({
                     }
                 >
 
-                    {product.thumbnail ? (
+                    <img
+                        src={getProductImage(product)}
+                        alt={product.name}
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = DEFAULT_PRODUCT_IMAGE;
+                        }}
+                        className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
+                    />
 
-                        <img
-                            src={getImageUrl(
-                                product.thumbnail
-                            )}
-                            alt={
-                                product.name
-                            }
-                            className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
-                        />
-
-                    ) : (
-
-                        <span className="text-5xl">
-                            📦
-                        </span>
-
-                    )}
 
                 </div>
 

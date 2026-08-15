@@ -6,7 +6,6 @@ const categorySchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
 
     slug: {
@@ -35,6 +34,11 @@ const categorySchema = new mongoose.Schema(
     sortOrder: {
       type: Number,
       default: 0,
+    },
+
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {

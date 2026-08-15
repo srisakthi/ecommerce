@@ -41,7 +41,7 @@ router.get(
 router.get(
     "/",
     authMiddleware,
-    authorizeRoles("admin"),
+    authorizeRoles("admin", "seller"),
     orderController.getAllOrders
 );
 
@@ -49,7 +49,7 @@ router.get(
 router.put(
     "/:id/status",
     authMiddleware,
-    authorizeRoles("admin"),
+    authorizeRoles("admin", "seller"),
     orderController.updateOrderStatus
 );
 

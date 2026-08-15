@@ -15,9 +15,8 @@ import {
 } from "@/features/cart/cartSlice";
 
 import { useNavigate } from "react-router-dom";
+import { getImageUrl, DEFAULT_PRODUCT_IMAGE } from "../../utils/image";
 
-const API_BASE_URL =
-    "http://localhost:5000";
 
 const Cart = () => {
 
@@ -204,25 +203,16 @@ const Cart = () => {
                                             className="flex h-32 w-32 shrink-0 items-center justify-center rounded-lg bg-gray-50 p-3"
                                         >
 
-                                            {item.thumbnail ? (
+                                            <img
+                                                src={getImageUrl(item.thumbnail)}
+                                                alt={item.name}
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = DEFAULT_PRODUCT_IMAGE;
+                                                }}
+                                                className="h-full w-full object-contain"
+                                            />
 
-                                                <img
-                                                    src={getImageUrl(
-                                                        item.thumbnail
-                                                    )}
-                                                    alt={
-                                                        item.name
-                                                    }
-                                                    className="h-full w-full object-contain"
-                                                />
-
-                                            ) : (
-
-                                                <span className="text-4xl">
-                                                    📦
-                                                </span>
-
-                                            )}
 
                                         </button>
 
@@ -455,9 +445,9 @@ const Cart = () => {
 
                             <button
                                 onClick={() => navigate("/checkout")}
-                                className="..."
+                                className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9900] py-3.5 font-bold text-black hover:bg-[#e88a00]"
                             >
-                                Proceed to Checkout →
+                                Proceed to Checkout <ArrowRight size={18} />
                             </button>
 
 

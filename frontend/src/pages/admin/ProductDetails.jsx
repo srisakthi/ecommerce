@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { getProduct } from "../../services/product.service";
+import { getProductImage, DEFAULT_PRODUCT_IMAGE } from "../../utils/image";
 
 const ProductDetails = () => {
     const navigate = useNavigate();
@@ -141,20 +142,16 @@ const ProductDetails = () => {
 
                 <div className="rounded-xl bg-white p-6 shadow-sm">
 
-                    <div className="flex min-h-[400px] items-center justify-center rounded-xl bg-gray-50">
-
-                        {product.thumbnail ? (
-                            <img
-                                src={product.thumbnail}
-                                alt={product.name}
-                                className="max-h-[380px] w-full object-contain"
-                            />
-                        ) : (
-                            <div className="text-gray-400">
-                                No Image
-                            </div>
-                        )}
-
+                    <div className="flex min-h-[400px] items-center justify-center rounded-xl bg-gray-50 overflow-hidden">
+                        <img
+                            src={getProductImage(product)}
+                            alt={product.name}
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = DEFAULT_PRODUCT_IMAGE;
+                            }}
+                            className="max-h-[380px] w-full object-contain"
+                        />
                     </div>
 
                 </div>

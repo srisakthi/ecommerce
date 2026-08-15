@@ -4,8 +4,8 @@ import api from "@/api/axios";
 // GET ALL PRODUCTS
 // --------------------------------------------------
 
-export const getProducts = () =>
-    api.get("/products");
+export const getProducts = (query = "") =>
+    api.get(`/products${query}`);
 
 
 // --------------------------------------------------

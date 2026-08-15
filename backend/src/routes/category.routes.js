@@ -32,21 +32,21 @@ router.get(
 router.post(
     "/",
     authenticate,
-    authorize("admin"),
+    authorize("admin", "seller"),
     categoryController.createCategory
 );
 
 router.put(
     "/:id",
     authenticate,
-    authorize("admin"),
+    authorize("admin", "seller"),
     categoryController.updateCategory
 );
 
 router.delete(
     "/:id",
     authenticate,
-    authorize("admin"),
+    authorize("admin", "seller"),
     categoryController.deleteCategory
 );
 

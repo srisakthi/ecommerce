@@ -1,12 +1,14 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import ApiError from "../utils/ApiError.js";
 import categoryService from "../services/category.service.js";
 
 const createCategory = asyncHandler(async (req, res) => {
 
+    const categoryData = { ...req.body, seller: req.user.id };
     const category =
         await categoryService.createCategory(
-            req.body
+            categoryData
         );
 
     return res.status(201).json(
@@ -28,7 +30,7 @@ const createCategory = asyncHandler(async (req, res) => {
 const getAllCategories = asyncHandler(async (req, res) => {
 
     const categories =
-        await categoryService.getAllCategories();
+        await categoryService.getAllCategories(req.query);
 
     return res.status(200).json(
 
@@ -71,6 +73,15 @@ const getCategoryBySlug = asyncHandler(async (req, res) => {
 
 const updateCategory = asyncHandler(async (req, res) => {
 
+    const existingCategory = await categoryService.getCategoryById(req.params.id);
+    if (!existingCategory) {
+        throw new ApiError(404, "Category not found");
+    }
+    
+    if (req.user.role === "seller" && existingCategory.seller?.toString() !== req.user.id.toString()) {
+        throw new ApiError(403, "Not authorized to update this category");
+    }
+
     const category =
         await categoryService.updateCategory(
 
@@ -97,6 +108,15 @@ const updateCategory = asyncHandler(async (req, res) => {
 });
 
 const deleteCategory = asyncHandler(async (req, res) => {
+
+    const existingCategory = await categoryService.getCategoryById(req.params.id);
+    if (!existingCategory) {
+        throw new ApiError(404, "Category not found");
+    }
+    
+    if (req.user.role === "seller" && existingCategory.seller?.toString() !== req.user.id.toString()) {
+        throw new ApiError(403, "Not authorized to delete this category");
+    }
 
     await categoryService.deleteCategory(
         req.params.id

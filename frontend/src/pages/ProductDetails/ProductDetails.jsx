@@ -16,10 +16,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { addToCart } from "@/features/cart/cartSlice";
-
 import { getProduct } from "@/services/product.service";
+import { getImageUrl, getProductImage, DEFAULT_PRODUCT_IMAGE } from "../../utils/image";
 
-const API_BASE_URL = "http://localhost:5000";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -82,17 +81,6 @@ const ProductDetails = () => {
         }
     };
 
-    const getImageUrl = (image) => {
-        if (!image) {
-            return "";
-        }
-
-        if (image.startsWith("http")) {
-            return image;
-        }
-
-        return `${API_BASE_URL}${image}`;
-    };
 
     const increaseQuantity = () => {
         if (
@@ -321,28 +309,17 @@ const ProductDetails = () => {
                         <div className="rounded-xl bg-white p-6 shadow-sm">
 
                             <div className="flex h-[450px] items-center justify-center">
-
-                                {selectedImage ? (
-
-                                    <img
-                                        src={getImageUrl(
-                                            selectedImage
-                                        )}
-                                        alt={
-                                            product.name
-                                        }
-                                        className="h-full max-w-full object-contain"
-                                    />
-
-                                ) : (
-
-                                    <div className="text-8xl">
-                                        📦
-                                    </div>
-
-                                )}
-
+                                <img
+                                    src={selectedImage ? getImageUrl(selectedImage) : getProductImage(product)}
+                                    alt={product.name}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = DEFAULT_PRODUCT_IMAGE;
+                                    }}
+                                    className="h-full max-w-full object-contain"
+                                />
                             </div>
+
 
                         </div>
 
@@ -659,7 +636,24 @@ const ProductDetails = () => {
                                     Buy Now
                                 </button>
 
+                                <button
+                                    type="button"
+                                    onClick={async () => {
+                                        try {
+                                            const { addToWishlist } = await import("@/services/wishlist.service");
+                                            await addToWishlist(product._id);
+                                            toast.success("Added to Wishlist!");
+                                        } catch (err) {
+                                            toast.error(err.response?.data?.message || "Failed to add to wishlist");
+                                        }
+                                    }}
+                                    className="flex items-center justify-center border border-gray-300 px-4 py-3.5 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
+                                >
+                                    ♡ Wishlist
+                                </button>
+
                             </div>
+
 
                         )}
 
@@ -814,8 +808,144 @@ const ProductDetails = () => {
 
                 </div>
 
+                {/* =================================
+                    CUSTOMER REVIEWS & RATING SECTION
+                ================================= */}
+
+                <ReviewsSection productId={product._id} />
+
             </div>
 
+        </div>
+    );
+};
+
+const ReviewsSection = ({ productId }) => {
+    const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [rating, setRating] = useState(5);
+    const [title, setTitle] = useState("");
+    const [comment, setComment] = useState("");
+    const [submitting, setSubmitting] = useState(false);
+
+    const fetchReviews = async () => {
+        try {
+            const { getProductReviews } = await import("@/services/review.service");
+            const res = await getProductReviews(productId);
+            if (res.data?.data) {
+                setReviews(res.data.data);
+            }
+        } catch (err) {
+            console.error("Failed to load reviews:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (productId) fetchReviews();
+    }, [productId]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!comment.trim()) {
+            toast.error("Please write a comment for your review");
+            return;
+        }
+        try {
+            setSubmitting(true);
+            const { createReview } = await import("@/services/review.service");
+            await createReview({ productId, rating: Number(rating), title, comment });
+            toast.success("Review submitted successfully!");
+            setTitle("");
+            setComment("");
+            fetchReviews();
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to submit review. Note: You must purchase this item first.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="mt-10 rounded-xl bg-white p-6 shadow-sm">
+            <h2 className="text-2xl font-bold mb-6">Customer Reviews & Ratings</h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Submit Review Form */}
+                <div className="bg-gray-50 p-5 rounded-lg border h-fit">
+                    <h3 className="font-bold text-lg mb-3">Write a Customer Review</h3>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Rating</label>
+                            <select
+                                value={rating}
+                                onChange={(e) => setRating(e.target.value)}
+                                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                            >
+                                <option value="5">★★★★★ (5 - Excellent)</option>
+                                <option value="4">★★★★☆ (4 - Good)</option>
+                                <option value="3">★★★☆☆ (3 - Average)</option>
+                                <option value="2">★★☆☆☆ (2 - Poor)</option>
+                                <option value="1">★☆☆☆☆ (1 - Terrible)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Headline</label>
+                            <input
+                                type="text"
+                                placeholder="What's most important to know?"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Review Description</label>
+                            <textarea
+                                rows="4"
+                                placeholder="What did you like or dislike?"
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                className="w-full rounded border px-3 py-2 text-sm bg-white"
+                                required
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={submitting}
+                            className="w-full bg-[#FF9900] py-2.5 rounded font-bold text-sm hover:bg-orange-500 disabled:opacity-50"
+                        >
+                            {submitting ? "Submitting..." : "Submit Review"}
+                        </button>
+                    </form>
+                </div>
+
+                {/* Reviews List */}
+                <div className="lg:col-span-2 space-y-4">
+                    {loading ? (
+                        <p className="text-gray-500">Loading reviews...</p>
+                    ) : reviews.length === 0 ? (
+                        <p className="text-gray-500 italic">No customer reviews yet. Be the first to review this product!</p>
+                    ) : (
+                        reviews.map((rev) => (
+                            <div key={rev._id} className="border-b pb-4 last:border-b-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-bold text-sm">{rev.user?.firstName} {rev.user?.lastName}</span>
+                                    <span className="text-xs text-gray-400">• {new Date(rev.createdAt).toLocaleDateString()}</span>
+                                </div>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="flex text-yellow-500 text-sm">
+                                        {"★".repeat(rev.rating)}{"☆".repeat(5 - rev.rating)}
+                                    </div>
+                                    {rev.title && <span className="font-bold text-sm">{rev.title}</span>}
+                                </div>
+                                <p className="text-gray-700 text-sm">{rev.comment}</p>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

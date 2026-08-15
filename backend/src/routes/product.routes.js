@@ -28,14 +28,14 @@ router.get(
 router.post(
     "/",
     authenticate,
-    authorize("admin"),
+    authorize("admin", "seller"),
     productController.createProduct
 );
 
 router.put(
     "/:id",
     authenticate,
-    authorize("admin"),
+    authorize("admin", "seller"),
     productController.updateProduct
 );
 
@@ -44,7 +44,7 @@ router.get("/:id", productController.getProductById);
 router.delete(
     "/:id",
     authenticate,
-    authorize("admin"),
+    authorize("admin", "seller"),
     productController.deleteProduct
 );
 
@@ -54,7 +54,7 @@ router.post(
 
     authenticate,
 
-    authorize("admin"),
+    authorize("admin", "seller"),
 
     upload.single("image"),
 

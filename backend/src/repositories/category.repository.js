@@ -12,8 +12,8 @@ const findById = async (id) => {
     return await Category.findById(id);
 };
 
-const getAllCategories = async () => {
-    return await Category.find().sort({
+const getAllCategories = async (filter = {}) => {
+    return await Category.find(filter).sort({
         sortOrder: 1,
         createdAt: -1
     });

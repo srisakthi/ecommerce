@@ -74,7 +74,7 @@ const getAllOrders =
         async (req, res) => {
 
             const orders =
-                await orderService.getAllOrders();
+                await orderService.getAllOrders(req.user);
 
             return res.status(200).json(
                 new ApiResponse(
@@ -93,7 +93,8 @@ const updateOrderStatus =
             const order =
                 await orderService.updateOrderStatus(
                     req.params.id,
-                    req.body.orderStatus
+                    req.body.orderStatus,
+                    req.user
                 );
 
             return res.status(200).json(

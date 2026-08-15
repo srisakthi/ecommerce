@@ -1,4 +1,5 @@
 import slugify from "slugify";
+import { v4 as uuidv4 } from "uuid";
 
 import ApiError from "../utils/ApiError.js";
 
@@ -10,7 +11,8 @@ const createCategory = async (categoryData) => {
         name,
         description,
         image,
-        sortOrder
+        sortOrder,
+        seller
     } = categoryData;
 
     if (!name) {
@@ -22,25 +24,13 @@ const createCategory = async (categoryData) => {
 
     }
 
-    const slug = slugify(name, {
-
+    const baseSlug = slugify(name, {
         lower: true,
-
         strict: true
-
     });
 
-    const existingCategory =
-        await categoryRepository.findBySlug(slug);
-
-    if (existingCategory) {
-
-        throw new ApiError(
-            409,
-            "Category already exists"
-        );
-
-    }
+    const uniqueSuffix = uuidv4().slice(0, 6);
+    const slug = `${baseSlug}-${uniqueSuffix}`;
 
     return await categoryRepository.createCategory({
 
@@ -52,16 +42,22 @@ const createCategory = async (categoryData) => {
 
         image,
 
-        sortOrder
+        sortOrder,
+        
+        seller
 
     });
 
 };
 
-const getAllCategories = async () => {
+const getAllCategories = async (query = {}) => {
+    let filter = {};
+    if (query.seller) filter.seller = query.seller;
+    return await categoryRepository.getAllCategories(filter);
+};
 
-    return await categoryRepository.getAllCategories();
-
+const getCategoryById = async (id) => {
+    return await categoryRepository.findById(id);
 };
 
 const getCategoryBySlug = async (slug) => {
@@ -99,17 +95,13 @@ const updateCategory = async (
 
     }
 
-    if (categoryData.name) {
-
-        categoryData.slug =
-            slugify(categoryData.name, {
-
-                lower: true,
-
-                strict: true
-
-            });
-
+    if (categoryData.name && categoryData.name !== category.name) {
+        const baseSlug = slugify(categoryData.name, {
+            lower: true,
+            strict: true
+        });
+        const uniqueSuffix = uuidv4().slice(0, 6);
+        categoryData.slug = `${baseSlug}-${uniqueSuffix}`;
     }
 
     return await categoryRepository.updateCategory(
@@ -150,6 +142,7 @@ export default {
 
     updateCategory,
 
-    deleteCategory
+    deleteCategory,
+    getCategoryById
 
 };

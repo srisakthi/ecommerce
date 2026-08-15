@@ -15,7 +15,7 @@ const Navbar = () => {
             }}
         >
 
-            <h2>Amazon Clone</h2>
+            <h2>SwiftMart</h2>
 
             <div>
 

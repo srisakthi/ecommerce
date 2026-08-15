@@ -11,7 +11,7 @@ const Footer = () => {
             }}
         >
 
-            © 2026 Amazon Enterprise Clone
+            © 2026 SwiftMart
 
         </footer>
 

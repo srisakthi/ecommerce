@@ -228,9 +228,16 @@ const getOrderById = async (
 };
 
 
-const getAllOrders = async () => {
+const getAllOrders = async (user) => {
+    let filter = {};
 
-    return Order.find()
+    if (user && user.role === "seller") {
+        const sellerProducts = await Product.find({ seller: user.id }).select('_id');
+        const sellerProductIds = sellerProducts.map(p => p._id);
+        filter = { "items.product": { $in: sellerProductIds } };
+    }
+
+    return Order.find(filter)
         .populate(
             "user",
             "name email"
@@ -243,8 +250,27 @@ const getAllOrders = async () => {
 
 const updateOrderStatus = async (
     orderId,
-    orderStatus
+    orderStatus,
+    user
 ) => {
+
+    const orderToUpdate = await Order.findById(orderId);
+    if (!orderToUpdate) {
+        throw new Error("Order not found");
+    }
+
+    if (user && user.role === "seller") {
+        const sellerProducts = await Product.find({ seller: user.id }).select('_id');
+        const sellerProductIds = sellerProducts.map(p => p._id.toString());
+        
+        const hasSellerProduct = orderToUpdate.items.some(item => 
+            sellerProductIds.includes(item.product.toString())
+        );
+
+        if (!hasSellerProduct) {
+            throw new Error("Not authorized to update this order");
+        }
+    }
 
     const order =
         await Order.findByIdAndUpdate(

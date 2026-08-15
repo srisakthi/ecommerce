@@ -9,8 +9,8 @@ import toast from "react-hot-toast";
 
 import { getProducts } from "@/services/product.service";
 import { getCategories } from "@/services/category.service";
+import { getProductImage, DEFAULT_PRODUCT_IMAGE } from "../../utils/image";
 
-const API_BASE_URL = "http://localhost:5000";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -37,13 +37,14 @@ const Home = () => {
                 await getProducts();
 
             const data =
-                response.data?.data || [];
+                response.data?.data;
 
-            setProducts(
-                Array.isArray(data)
-                    ? data
-                    : []
-            );
+            const productList = Array.isArray(data)
+                ? data
+                : (data?.products || []);
+
+            setProducts(productList);
+
 
         } catch (error) {
             console.error(
@@ -127,7 +128,7 @@ const Home = () => {
                         <div className="text-white">
 
                             <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#FF9900]">
-                                Welcome to Amazon Enterprise
+                                Welcome to SwiftMart
                             </p>
 
                             <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
@@ -423,28 +424,17 @@ const Home = () => {
                                     >
 
                                         <div className="flex h-56 items-center justify-center bg-gray-50 p-5">
-
-                                            {product.thumbnail ? (
-
-                                                <img
-                                                    src={getImageUrl(
-                                                        product.thumbnail
-                                                    )}
-                                                    alt={
-                                                        product.name
-                                                    }
-                                                    className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
-                                                />
-
-                                            ) : (
-
-                                                <div className="text-5xl">
-                                                    📦
-                                                </div>
-
-                                            )}
-
+                                            <img
+                                                src={getProductImage(product)}
+                                                alt={product.name}
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = DEFAULT_PRODUCT_IMAGE;
+                                                }}
+                                                className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
+                                            />
                                         </div>
+
 
                                     </button>
 

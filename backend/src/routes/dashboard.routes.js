@@ -12,7 +12,7 @@ router.get(
 
     authMiddleware,
 
-    authorize("admin"),
+    authorize("admin", "seller"),
 
     dashboardController.getDashboardStats
 
